@@ -21,7 +21,13 @@ from database.mongodb import get_db, check_db_health, get_next_complaint_id
 
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
+CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": [
+    "https://campusshield-one.vercel.app",
+    "https://campusshield-backend.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "*"
+]}})
 
 
 @app.route('/api/health', methods=['GET'])
