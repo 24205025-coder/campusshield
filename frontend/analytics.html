@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics & SLA Performance - CampusShield</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-[#F4F7F9] text-[#1C252E] flex flex-col min-h-screen">
+
+  <div id="app-header"></div>
+
+  <main class="flex-grow py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto space-y-8">
+      
+      <!-- Top Bar -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#C2CFDB] pb-6">
+        <div>
+          <a href="/admin-dashboard.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#5C6F84] hover:text-[#2C3A47] mb-2">
+            <span>← Back to Admin Dashboard</span>
+          </a>
+          <h1 class="text-3xl font-black text-[#2C3A47]">
+            Analytics & SLA Performance
+          </h1>
+          <p class="text-xs text-[#5C6F84] font-medium mt-0.5">
+            Real-time analytics datasets, SLA resolution efficiency, and department breakdown.
+          </p>
+        </div>
+
+        <button id="btn-refresh-analytics" class="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#C2CFDB] text-xs font-bold text-[#2C3A47] hover:bg-[#DCE4EC]/50 shadow-sm">
+          <span>Refresh Analytics</span>
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-analytics" class="bg-white rounded-3xl p-12 text-center shadow-sm border border-[#C2CFDB]">
+        <div class="w-10 h-10 border-4 border-[#DCE4EC] border-t-[#2C3A47] rounded-full animate-spin mx-auto mb-3"></div>
+        <p class="text-xs font-bold text-[#5C6F84]">Computing analytics datasets...</p>
+      </div>
+
+      <!-- Content Container -->
+      <div id="analytics-content" class="space-y-8 hidden animate-fade-in">
+        
+        <!-- Row 1: Category & SLA Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB]">
+            <h3 class="text-base font-bold text-[#2C3A47] mb-4">A. Complaints by Category</h3>
+            <div class="chart-container">
+              <canvas id="chart-category"></canvas>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB]">
+            <h3 class="text-base font-bold text-[#2C3A47] mb-4">B. SLA Resolution Performance</h3>
+            <div class="chart-container">
+              <canvas id="chart-sla"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Status & Priority Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB]">
+            <h3 class="text-base font-bold text-[#2C3A47] mb-4">C. Complaints by Status</h3>
+            <div class="chart-container">
+              <canvas id="chart-status"></canvas>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB]">
+            <h3 class="text-base font-bold text-[#2C3A47] mb-4">D. Complaints by Priority</h3>
+            <div class="chart-container">
+              <canvas id="chart-priority"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Monthly Trend -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB]">
+          <h3 class="text-base font-bold text-[#2C3A47] mb-4">E. Monthly Complaint Trend</h3>
+          <div class="chart-container">
+            <canvas id="chart-trend"></canvas>
+          </div>
+        </div>
+
+        <!-- Row 4: Department Performance Table -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB] space-y-4">
+          <h3 class="text-base font-bold text-[#2C3A47]">F. Department SLA & Efficiency Performance</h3>
+
+          <div class="overflow-x-auto rounded-2xl border border-[#C2CFDB]">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-[#2C3A47] text-[#A4B4C0] uppercase font-bold text-[10px] tracking-wider">
+                <tr>
+                  <th class="p-4">Department Name</th>
+                  <th class="p-4">Total Complaints</th>
+                  <th class="p-4">Resolved</th>
+                  <th class="p-4">Pending</th>
+                  <th class="p-4">Overdue</th>
+                </tr>
+              </thead>
+              <tbody id="dept-tbody" class="divide-y divide-[#C2CFDB]/60 bg-white"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <div id="app-footer"></div>
+
+  <script type="module">
+    import { renderNavigation } from '/js/navigation.js';
+    import { initAnalyticsPage } from '/js/analytics.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderNavigation();
+      await initAnalyticsPage();
+    });
+  </script>
+</body>
+</html>

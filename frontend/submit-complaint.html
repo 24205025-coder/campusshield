@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Complaint - CampusShield</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-[#F4F7F9] text-[#1C252E] flex flex-col min-h-screen">
+
+  <div id="app-header"></div>
+
+  <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+      
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DCE4EC] text-[#2C3A47] text-xs font-bold uppercase tracking-wider mb-3">
+          <span>🛡️ Official Grievance Form</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#2C3A47]">
+          Submit a Campus Complaint
+        </h1>
+        <p class="mt-2 text-sm text-[#5C6F84] font-medium">
+          Your report will be reviewed by the respective campus administration immediately.
+        </p>
+      </div>
+
+      <!-- Alert Notification Container -->
+      <div id="alert-container" class="mb-6 hidden"></div>
+
+      <!-- Sensitive Notice Banner -->
+      <div id="sensitive-notice" class="mb-8 p-5 rounded-2xl bg-[#2C3A47] text-[#A4B4C0] shadow-lg border border-[#5C6F84] hidden flex items-start gap-4">
+        <span class="text-2xl">🚨</span>
+        <div>
+          <h3 class="font-bold text-base text-white">Sensitive Complaint Notice</h3>
+          <p class="text-xs text-[#A4B4C0]/90 mt-1 leading-relaxed">
+            This is a sensitive complaint category. Your information will be handled with high confidentiality by the Special Grievance Committee.
+          </p>
+        </div>
+      </div>
+
+      <!-- Form Container -->
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-[#C2CFDB]">
+        <form id="complaint-form" class="space-y-6">
+          
+          <!-- Anonymous Toggle -->
+          <div class="p-4 rounded-2xl bg-[#F4F7F9] border border-[#C2CFDB] flex items-center justify-between">
+            <div>
+              <label for="anonymous" class="text-sm font-bold text-[#2C3A47] cursor-pointer">
+                Anonymous Reporting
+              </label>
+              <p class="text-xs text-gray-500">Hide your name and email address from the public report.</p>
+            </div>
+            <input type="checkbox" id="anonymous" class="w-5 h-5 accent-[#2C3A47] rounded cursor-pointer">
+          </div>
+
+          <!-- Student Info Row -->
+          <div id="student-info-row" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">
+                Student Full Name *
+              </label>
+              <input type="text" id="student_name" placeholder="e.g. Alex Johnson" class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6F84]">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">
+                Student Email Address *
+              </label>
+              <input type="email" id="student_email" placeholder="alex@campus.edu" class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6F84]">
+            </div>
+          </div>
+
+          <!-- Category & Priority -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">
+                Complaint Category *
+              </label>
+              <select id="category" class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-sm bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#5C6F84]">
+                <option value="Ragging / Bullying">Ragging / Bullying</option>
+                <option value="Harassment">Harassment</option>
+                <option value="Classroom / Lab Issues">Classroom / Lab Issues</option>
+                <option value="Hostel Complaints">Hostel Complaints</option>
+                <option value="Canteen / Food Quality">Canteen / Food Quality</option>
+                <option value="Water & Sanitation">Water & Sanitation</option>
+                <option value="Electricity / Infrastructure">Electricity / Infrastructure</option>
+                <option value="Transport Complaints">Transport Complaints</option>
+                <option value="Faculty / Academic Issues">Faculty / Academic Issues</option>
+                <option value="Fee / Payment-Related Grievances">Fee / Payment-Related Grievances</option>
+                <option value="Wi-Fi / IT Problems">Wi-Fi / IT Problems</option>
+                <option value="Other Complaints">Other Complaints</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">
+                Priority Level *
+              </label>
+              <select id="priority" class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-sm bg-white cursor-pointer font-medium focus:outline-none focus:ring-2 focus:ring-[#5C6F84]">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">
+              Specific Campus Location *
+            </label>
+            <input type="text" id="location" required placeholder="e.g. Hostel Block B - Room 204 / Science Block Lab 2" class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-sm">
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">
+              Complaint Title *
+            </label>
+            <input type="text" id="title" required placeholder="Brief summary of the issue..." class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-sm font-semibold">
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">
+              Detailed Description *
+            </label>
+            <textarea id="description" rows="5" required placeholder="Provide complete facts, dates, times, and specific details..." class="w-full p-4 rounded-xl border border-[#C2CFDB] text-sm leading-relaxed"></textarea>
+          </div>
+
+          <!-- File Upload -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">
+              Evidence Upload (Images or PDF)
+            </label>
+            <div class="border-2 border-dashed border-[#C2CFDB] rounded-2xl p-6 text-center hover:border-[#5C6F84] transition-colors bg-[#F4F7F9]/50">
+              <input type="file" id="evidence" accept="image/*,.pdf" class="hidden">
+              <label for="evidence" class="cursor-pointer flex flex-col items-center justify-center">
+                <span class="text-2xl mb-1">📁</span>
+                <span id="file-name-display" class="text-sm font-bold text-[#2C3A47]">Click to upload file</span>
+                <span class="text-xs text-gray-500 mt-1">PNG, JPG, PDF up to 16MB</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-4">
+            <button type="submit" id="btn-submit" class="w-full py-4 rounded-xl bg-[#2C3A47] text-[#A4B4C0] font-extrabold text-base hover:bg-[#1E293B] hover:shadow-xl transition-all flex items-center justify-center gap-2 border border-[#5C6F84]">
+              <span>Submit Complaint</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- SUCCESS MODAL -->
+  <div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden animate-fade-in">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-[#C2CFDB] text-center space-y-6">
+      <div class="w-16 h-16 rounded-full bg-[#DCE4EC] text-[#2C3A47] flex items-center justify-center mx-auto text-2xl">
+        ✅
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-black text-[#2C3A47]">Complaint Submitted Successfully</h2>
+        <p class="text-xs text-[#5C6F84] font-semibold mt-1">Your complaint is recorded in the system.</p>
+      </div>
+
+      <div class="bg-[#F4F7F9] p-5 rounded-2xl border border-[#C2CFDB] space-y-3 text-left text-sm">
+        <div class="flex justify-between items-center border-b border-[#C2CFDB]/60 pb-2">
+          <span class="text-xs font-bold uppercase text-gray-500">Complaint ID</span>
+          <span id="modal-complaint-id" class="font-mono font-black text-lg text-[#2C3A47]"></span>
+        </div>
+        <div class="flex justify-between items-center border-b border-[#C2CFDB]/60 pb-2">
+          <span class="text-xs font-bold uppercase text-gray-500">Status</span>
+          <span id="modal-status" class="font-bold text-[#5C6F84]"></span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-bold uppercase text-gray-500">Category</span>
+          <span id="modal-category" class="font-medium text-[#1C252E] text-xs"></span>
+        </div>
+      </div>
+
+      <button id="btn-track-submitted" class="w-full py-3 rounded-xl bg-[#2C3A47] text-[#A4B4C0] font-bold text-sm hover:bg-[#1E293B] transition-all shadow-md">
+        Track Complaint Status
+      </button>
+    </div>
+  </div>
+
+  <div id="app-footer"></div>
+
+  <script type="module">
+    import { renderNavigation } from '/js/navigation.js';
+    import { initSubmitPage } from '/js/submit-complaint.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderNavigation();
+      await initSubmitPage();
+    });
+  </script>
+</body>
+</html>

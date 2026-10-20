@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overdue Complaints Escalation - CampusShield</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-[#F4F7F9] text-[#1C252E] flex flex-col min-h-screen">
+
+  <div id="app-header"></div>
+
+  <main class="flex-grow py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto space-y-8">
+      
+      <!-- Navigation & Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#C2CFDB] pb-6">
+        <div>
+          <a href="/admin-dashboard.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#5C6F84] hover:text-[#2C3A47] mb-2">
+            <span>← Back to Admin Dashboard</span>
+          </a>
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 bg-red-600 text-white rounded-2xl shadow-md">
+              <span>⏰</span>
+            </div>
+            <div>
+              <h1 class="text-3xl font-black text-[#2C3A47]">
+                Overdue Complaints Escalation
+              </h1>
+              <p class="text-xs text-[#5C6F84] font-medium mt-0.5">
+                Complaints exceeding priority SLA deadlines. Critical overdue items are listed first.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-refresh-overdue" class="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#C2CFDB] text-xs font-bold text-[#2C3A47] hover:bg-[#DCE4EC]/50 shadow-sm">
+          <span>Refresh Overdue List</span>
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="bg-white rounded-3xl p-12 text-center shadow-sm border border-[#C2CFDB]">
+        <div class="w-10 h-10 border-4 border-[#DCE4EC] border-t-[#2C3A47] rounded-full animate-spin mx-auto mb-3"></div>
+        <p class="text-xs font-bold text-[#5C6F84]">Checking SLA statuses...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="bg-white rounded-3xl p-12 text-center shadow-sm border border-[#C2CFDB] space-y-3 hidden">
+        <div class="w-12 h-12 rounded-full bg-green-50 text-green-600 flex items-center justify-center mx-auto text-xl">✅</div>
+        <h3 class="text-lg font-bold text-[#2C3A47]">Zero Overdue Complaints</h3>
+        <p class="text-xs text-gray-500">All registered complaints are currently resolved or operating within SLA deadlines.</p>
+      </div>
+
+      <!-- Table Container -->
+      <div id="table-container" class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB] space-y-6 hidden">
+        <h2 class="text-lg font-extrabold text-[#2C3A47]">
+          Escalated Overdue Complaints (<span id="overdue-count">0</span>)
+        </h2>
+
+        <div class="overflow-x-auto rounded-2xl border border-[#C2CFDB]">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#2C3A47] text-[#A4B4C0] uppercase font-bold text-[10px] tracking-wider">
+              <tr>
+                <th class="p-4">Complaint ID</th>
+                <th class="p-4">Title</th>
+                <th class="p-4">Category</th>
+                <th class="p-4">Priority</th>
+                <th class="p-4">Department</th>
+                <th class="p-4">SLA Deadline</th>
+                <th class="p-4">Overdue Duration</th>
+                <th class="p-4">Status</th>
+                <th class="p-4 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="overdue-tbody" class="divide-y divide-[#C2CFDB]/60 bg-white"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="app-footer"></div>
+
+  <script type="module">
+    import { renderNavigation } from '/js/navigation.js';
+    import { initOverdueComplaintsPage } from '/js/overdue-complaints.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderNavigation();
+      await initOverdueComplaintsPage();
+    });
+  </script>
+</body>
+</html>

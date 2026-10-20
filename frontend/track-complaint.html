@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Complaint - CampusShield</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-[#F4F7F9] text-[#1C252E] flex flex-col min-h-screen">
+
+  <div id="app-header"></div>
+
+  <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto space-y-8">
+      
+      <!-- Page Header -->
+      <div class="text-center space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DCE4EC] text-[#2C3A47] text-xs font-bold uppercase tracking-wider">
+          <span>🔍 Live Status Portal</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black text-[#2C3A47]">
+          Track Your Complaint
+        </h1>
+        <p class="text-sm text-[#5C6F84] font-medium">
+          Enter your unique Complaint Reference Token (e.g. CMP-1001) to view live progress.
+        </p>
+      </div>
+
+      <!-- Search Bar Container -->
+      <div class="bg-white rounded-3xl p-4 sm:p-6 shadow-xl border border-[#C2CFDB]">
+        <form id="track-form" class="flex flex-col sm:flex-row gap-3">
+          <input type="text" id="search-input" required placeholder="Enter Complaint ID (e.g. CMP-1001)" class="flex-grow px-5 py-3 rounded-2xl border border-[#C2CFDB] text-base font-semibold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#5C6F84]">
+          <button type="submit" class="py-3 px-8 rounded-2xl bg-[#2C3A47] text-[#A4B4C0] font-bold text-base hover:bg-[#1E293B] transition-all shadow-md">
+            Track Status
+          </button>
+        </form>
+
+        <!-- Demo Pills -->
+        <div class="mt-4 flex items-center gap-2 flex-wrap text-xs text-gray-500">
+          <span class="font-semibold text-[#5C6F84]">Try Demo IDs:</span>
+          <button data-id="CMP-1001" class="demo-pill px-2.5 py-1 rounded-lg bg-[#F4F7F9] border border-[#C2CFDB] font-mono text-[#2C3A47] font-bold hover:border-[#5C6F84]">CMP-1001</button>
+          <button data-id="CMP-1002" class="demo-pill px-2.5 py-1 rounded-lg bg-[#F4F7F9] border border-[#C2CFDB] font-mono text-[#2C3A47] font-bold hover:border-[#5C6F84]">CMP-1002</button>
+          <button data-id="CMP-1003" class="demo-pill px-2.5 py-1 rounded-lg bg-[#F4F7F9] border border-[#C2CFDB] font-mono text-[#2C3A47] font-bold hover:border-[#5C6F84]">CMP-1003</button>
+          <button data-id="CMP-1004" class="demo-pill px-2.5 py-1 rounded-lg bg-[#F4F7F9] border border-[#C2CFDB] font-mono text-[#2C3A47] font-bold hover:border-[#5C6F84]">CMP-1004</button>
+          <button data-id="CMP-1005" class="demo-pill px-2.5 py-1 rounded-lg bg-[#F4F7F9] border border-[#C2CFDB] font-mono text-[#2C3A47] font-bold hover:border-[#5C6F84]">CMP-1005</button>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="bg-white rounded-3xl p-12 text-center shadow-md border border-[#C2CFDB] hidden">
+        <div class="w-12 h-12 border-4 border-[#DCE4EC] border-t-[#2C3A47] rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-sm font-bold text-[#2C3A47]">Retrieving Complaint Record...</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="bg-white rounded-3xl p-10 text-center shadow-lg border border-red-200 hidden space-y-4">
+        <div class="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto text-2xl">⚠️</div>
+        <h3 id="error-msg-text" class="text-xl font-bold text-[#1C252E]">Complaint Not Found</h3>
+        <p class="text-xs text-gray-500 max-w-md mx-auto">Please double check the ID format. Ensure it starts with "CMP-" followed by digits.</p>
+      </div>
+
+      <!-- Complaint Details & Timeline -->
+      <div id="complaint-detail" class="space-y-8 hidden animate-fade-in">
+        
+        <!-- Overview Card -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-[#C2CFDB] space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#C2CFDB] pb-6">
+            <div>
+              <div class="flex items-center gap-3">
+                <span id="detail-id" class="font-mono text-2xl font-black text-[#2C3A47]"></span>
+                <span id="detail-priority-badge" class="badge"></span>
+              </div>
+              <h2 id="detail-title" class="text-xl font-bold text-[#1C252E] mt-2"></h2>
+            </div>
+            <div class="flex flex-col items-start sm:items-end gap-1">
+              <span class="text-xs font-bold uppercase text-gray-500">Current Status</span>
+              <span id="detail-status-badge" class="badge"></span>
+            </div>
+          </div>
+
+          <!-- Metadata Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+            <div class="p-3.5 bg-[#F4F7F9] rounded-xl border border-[#C2CFDB]/60">
+              <span class="block font-bold text-gray-500 uppercase text-[10px]">Category</span>
+              <span id="detail-category" class="font-semibold text-[#2C3A47]"></span>
+            </div>
+
+            <div class="p-3.5 bg-[#F4F7F9] rounded-xl border border-[#C2CFDB]/60">
+              <span class="block font-bold text-gray-500 uppercase text-[10px]">Assigned Department</span>
+              <span id="detail-department" class="font-semibold text-[#2C3A47]"></span>
+            </div>
+
+            <div class="p-3.5 bg-[#F4F7F9] rounded-xl border border-[#C2CFDB]/60">
+              <span class="block font-bold text-gray-500 uppercase text-[10px]">Location</span>
+              <span id="detail-location" class="font-semibold text-[#2C3A47]"></span>
+            </div>
+
+            <div class="p-3.5 bg-[#F4F7F9] rounded-xl border border-[#C2CFDB]/60">
+              <span class="block font-bold text-gray-500 uppercase text-[10px]">Submitted By</span>
+              <span id="detail-student" class="font-semibold text-[#2C3A47]"></span>
+            </div>
+
+            <div class="p-3.5 bg-[#F4F7F9] rounded-xl border border-[#C2CFDB]/60">
+              <span class="block font-bold text-gray-500 uppercase text-[10px]">Date Submitted</span>
+              <span id="detail-date" class="font-semibold text-[#2C3A47]"></span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">Full Description</h3>
+            <div id="detail-description" class="p-4 bg-[#F4F7F9] rounded-xl border border-[#C2CFDB] text-sm text-[#1C252E] leading-relaxed"></div>
+          </div>
+
+          <!-- Attached Evidence -->
+          <div id="detail-evidence-container" class="p-4 rounded-xl bg-[#DCE4EC]/50 border border-[#C2CFDB] flex items-center justify-between hidden">
+            <span class="text-xs font-bold text-[#2C3A47]">📎 Attached Evidence Document</span>
+            <a id="detail-evidence-link" href="#" target="_blank" class="text-xs font-bold text-[#5C6F84] hover:underline">View Evidence File ↗</a>
+          </div>
+
+        </div>
+
+        <!-- Resolution Card -->
+        <div id="detail-resolution-container" class="bg-emerald-50 border border-emerald-300 rounded-3xl p-6 shadow-md space-y-3 hidden">
+          <div class="flex items-center gap-2 text-emerald-900 font-extrabold text-lg">
+            <span>✅ COMPLAINT RESOLVED</span>
+          </div>
+          <div class="bg-white/80 p-4 rounded-2xl border border-emerald-200 text-sm font-semibold text-emerald-900 space-y-2">
+            <p id="detail-resolution-summary"></p>
+            <span id="detail-resolution-date" class="text-xs text-emerald-700 block"></span>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-[#C2CFDB] space-y-6">
+          <h3 class="text-lg font-black text-[#2C3A47]">Status & Investigation Timeline</h3>
+          <div id="detail-timeline-events" class="timeline-container"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <div id="app-footer"></div>
+
+  <script type="module">
+    import { renderNavigation } from '/js/navigation.js';
+    import { initTrackPage } from '/js/track-complaint.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderNavigation();
+      await initTrackPage();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusShield - Smart Campus Grievance Portal</title>
+  <meta name="description" content="Report campus grievances securely and track resolution transparently from submission to final closure.">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-[#F4F7F9] text-[#1C252E] flex flex-col min-h-screen">
+
+  <!-- Dynamic Header Navigation -->
+  <div id="app-header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    
+    <!-- HERO SECTION -->
+    <section class="relative overflow-hidden bg-gradient-hero text-white pt-16 pb-24 px-4 sm:px-6 lg:px-8 rounded-b-[2.5rem] shadow-xl">
+      <div class="relative max-w-5xl mx-auto text-center space-y-8 animate-fade-in">
+        
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#A4B4C0] text-xs font-semibold uppercase tracking-widest shadow-sm">
+          <span>🛡️</span>
+          <span>Smart Campus Grievance & Resolution System</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight text-white drop-shadow-sm">
+          Your Voice. Your Campus. <br />
+          <span class="text-[#A4B4C0] underline decoration-[#5C6F84] decoration-4">Your Right.</span>
+        </h1>
+
+        <p class="max-w-2xl mx-auto text-lg sm:text-xl text-[#F4F7F9]/90 font-normal leading-relaxed">
+          Report campus grievances securely and track their resolution transparently from submission to final closure.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <a href="/submit-complaint.html" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-bold bg-[#2C3A47] text-[#A4B4C0] hover:bg-[#1E293B] hover:shadow-2xl transition-all border border-[#5C6F84]">
+            <span class="mr-2">➕</span> Submit a Complaint
+          </a>
+
+          <a href="/track-complaint.html" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-bold bg-[#5C6F84] text-white hover:bg-[#4A5D6E] hover:shadow-xl transition-all border border-[#C2CFDB]/40">
+            <span class="mr-2">🔍</span> Track Complaint
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATISTICS CARDS SECTION -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-20">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+        
+        <div class="stat-card flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#5C6F84]">Total Complaints</span>
+            <div class="p-2 bg-[#DCE4EC]/50 rounded-lg">🛡️</div>
+          </div>
+          <p id="stat-total" class="text-3xl sm:text-4xl font-black text-[#2C3A47] mt-4">...</p>
+        </div>
+
+        <div class="stat-card flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#5C6F84]">Pending</span>
+            <div class="p-2 bg-[#DCE4EC]/50 rounded-lg">⏳</div>
+          </div>
+          <p id="stat-pending" class="text-3xl sm:text-4xl font-black text-[#5C6F84] mt-4">...</p>
+        </div>
+
+        <div class="stat-card flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#5C6F84]">Under Investigation</span>
+            <div class="p-2 bg-[#DCE4EC]/50 rounded-lg">⚠️</div>
+          </div>
+          <p id="stat-investigating" class="text-3xl sm:text-4xl font-black text-[#2C3A47] mt-4">...</p>
+        </div>
+
+        <div class="stat-card flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#5C6F84]">Resolved</span>
+            <div class="p-2 bg-[#DCE4EC]/50 rounded-lg">✅</div>
+          </div>
+          <p id="stat-resolved" class="text-3xl sm:text-4xl font-black text-[#2C3A47] mt-4">...</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COMPLAINT CATEGORIES SECTION -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-[#2C3A47] tracking-tight">
+          Grievance Categories
+        </h2>
+        <p class="mt-3 text-base text-[#5C6F84] font-medium">
+          Select a category below to submit a structured complaint directly to the responsible campus department.
+        </p>
+      </div>
+
+      <!-- Categories Container -->
+      <div id="category-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="bg-[#DCE4EC]/40 border-y border-[#C2CFDB] py-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 class="text-3xl font-extrabold text-[#2C3A47]">How CampusShield Works</h2>
+          <p class="mt-2 text-sm text-[#5C6F84] font-medium">Transparent 4-step workflow from submission to resolution</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="bg-white rounded-2xl p-6 shadow-md border border-[#C2CFDB] text-center">
+            <span class="inline-block text-4xl font-black text-[#2C3A47]/20 mb-2">01</span>
+            <h3 class="text-xl font-bold text-[#2C3A47] mb-2">Submit</h3>
+            <p class="text-xs text-gray-600">Fill out details with location, priority, and optional evidence photos/documents.</p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 shadow-md border border-[#C2CFDB] text-center">
+            <span class="inline-block text-4xl font-black text-[#5C6F84]/20 mb-2">02</span>
+            <h3 class="text-xl font-bold text-[#2C3A47] mb-2">Assigned</h3>
+            <p class="text-xs text-gray-600">Automatically routed to the respective department head or grievance committee.</p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 shadow-md border border-[#C2CFDB] text-center">
+            <span class="inline-block text-4xl font-black text-[#5C6F84]/20 mb-2">03</span>
+            <h3 class="text-xl font-bold text-[#2C3A47] mb-2">Investigated</h3>
+            <p class="text-xs text-gray-600">Designated staff inspects the problem and posts progress updates to the timeline.</p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 shadow-md border border-[#C2CFDB] text-center">
+            <span class="inline-block text-4xl font-black text-[#2C3A47]/20 mb-2">04</span>
+            <h3 class="text-xl font-bold text-[#2C3A47] mb-2">Resolved</h3>
+            <p class="text-xs text-gray-600">Action is completed and confirmed closed. You receive full resolution verification.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Dynamic Footer Navigation -->
+  <div id="app-footer"></div>
+
+  <script type="module">
+    import { renderNavigation } from '/js/navigation.js';
+    import { initHomePage } from '/js/home.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderNavigation();
+      await initHomePage();
+    });
+  </script>
+</body>
+</html>

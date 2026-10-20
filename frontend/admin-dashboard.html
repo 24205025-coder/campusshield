@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - CampusShield</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-[#F4F7F9] text-[#1C252E] flex flex-col min-h-screen">
+
+  <div id="app-header"></div>
+
+  <div class="min-h-screen flex flex-col md:flex-row flex-grow">
+    
+    <!-- SIDEBAR -->
+    <aside class="w-full md:w-64 bg-[#2C3A47] text-[#F4F7F9] flex-shrink-0 border-r border-[#5C6F84]">
+      <div class="p-6 border-b border-[#5C6F84] flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#5C6F84] flex items-center justify-center text-xl">🛡️</div>
+          <div>
+            <h2 class="font-extrabold text-lg tracking-tight text-white">CampusShield</h2>
+            <span class="text-[10px] uppercase font-bold text-[#A4B4C0] tracking-widest">Admin Control</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="p-4 space-y-2">
+        <a href="/admin-dashboard.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-[#5C6F84] text-[#A4B4C0] border border-[#A4B4C0]/30">
+          <span>Overview & Complaints</span>
+        </a>
+        <a href="/analytics.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white/80 hover:bg-[#5C6F84]/50 hover:text-white transition-colors">
+          <span>Analytics & Charts</span>
+        </a>
+        <a href="/overdue-complaints.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-amber-300 hover:bg-[#5C6F84]/50 hover:text-white transition-colors">
+          <span>Overdue SLA</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow p-4 sm:p-8 space-y-8 overflow-x-hidden">
+      
+      <!-- Top Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#C2CFDB] pb-6">
+        <div>
+          <h1 class="text-3xl font-black text-[#2C3A47]">Executive Overview</h1>
+          <p class="text-xs text-[#5C6F84] font-bold mt-1">CampusShield Administrative Portal</p>
+        </div>
+
+        <button id="btn-refresh" class="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-[#C2CFDB] text-xs font-bold text-[#2C3A47] hover:bg-[#DCE4EC]/50 shadow-sm">
+          <span>Refresh Data</span>
+        </button>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-[#C2CFDB]">
+          <span class="text-[10px] font-extrabold uppercase text-[#5C6F84]">Total Complaints</span>
+          <p id="stat-total" class="text-2xl font-black text-[#2C3A47] mt-2">0</p>
+        </div>
+        <div class="bg-amber-50 rounded-2xl p-4 shadow-sm border border-amber-200">
+          <span class="text-[10px] font-extrabold uppercase text-amber-800">Submitted</span>
+          <p id="stat-submitted" class="text-2xl font-black text-amber-900 mt-2">0</p>
+        </div>
+        <div class="bg-blue-50 rounded-2xl p-4 shadow-sm border border-blue-200">
+          <span class="text-[10px] font-extrabold uppercase text-blue-800">Investigating</span>
+          <p id="stat-investigating" class="text-2xl font-black text-blue-900 mt-2">0</p>
+        </div>
+        <div class="bg-[#EBF0F4] rounded-2xl p-4 shadow-sm border border-[#C2CFDB]">
+          <span class="text-[10px] font-extrabold uppercase text-[#4A5D6E]">Action Taken</span>
+          <p id="stat-action" class="text-2xl font-black text-[#2C3A47] mt-2">0</p>
+        </div>
+        <div class="bg-emerald-50 rounded-2xl p-4 shadow-sm border border-emerald-200">
+          <span class="text-[10px] font-extrabold uppercase text-emerald-800">Resolved</span>
+          <p id="stat-resolved" class="text-2xl font-black text-emerald-900 mt-2">0</p>
+        </div>
+      </div>
+
+      <!-- Filter & Complaints Container -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB] space-y-6">
+        
+        <!-- Toolbar Filters -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div class="lg:col-span-2">
+            <input type="text" id="search-term" placeholder="Search ID, title, student name..." class="w-full px-4 py-2 text-xs rounded-xl border border-[#C2CFDB] focus:outline-none focus:ring-2 focus:ring-[#5C6F84]">
+          </div>
+          <div>
+            <select id="filter-date" class="w-full px-3 py-2 text-xs rounded-xl border border-[#C2CFDB] bg-white cursor-pointer"></select>
+          </div>
+          <div>
+            <select id="filter-category" class="w-full px-3 py-2 text-xs rounded-xl border border-[#C2CFDB] bg-white cursor-pointer"></select>
+          </div>
+          <div class="flex gap-2">
+            <select id="filter-status" class="w-full px-3 py-2 text-xs rounded-xl border border-[#C2CFDB] bg-white cursor-pointer"></select>
+            <button id="btn-sort" class="px-3 py-2 text-xs font-bold rounded-xl border border-[#C2CFDB] bg-white text-[#2C3A47] hover:bg-[#F4F7F9] shrink-0">
+              <span>Newest</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grouped Tables Container -->
+        <div id="grouped-tables-container"></div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <div id="app-footer"></div>
+
+  <script type="module">
+    import { renderNavigation } from '/js/navigation.js';
+    import { initAdminDashboardPage } from '/js/admin-dashboard.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderNavigation();
+      await initAdminDashboardPage();
+    });
+  </script>
+</body>
+</html>

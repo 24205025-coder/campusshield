@@ -1,0 +1,59 @@
+/* Dashboard, Tables, Cards, Timeline & Charts */
+.dashboard-grid {
+  display: grid;
+  grid-template-cols: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border-gray);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  transition: all 0.2s ease;
+}
+.stat-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
+  border-color: var(--slate-muted);
+}
+
+.timeline-container {
+  position: relative;
+  padding-left: 2rem;
+}
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 0.85rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background-color: var(--border-gray);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 0.25rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  background-color: var(--slate-muted);
+  border: 2px solid white;
+}
+.timeline-item.active::before {
+  background-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+}

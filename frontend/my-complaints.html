@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Complaints - CampusShield</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-[#F4F7F9] text-[#1C252E] flex flex-col min-h-screen">
+
+  <div id="app-header"></div>
+
+  <main class="flex-grow py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto space-y-8">
+      
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#C2CFDB] pb-6">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DCE4EC] text-[#2C3A47] text-xs font-bold uppercase tracking-wider mb-2">
+            <span>🛡️ Personal Grievance Dashboard</span>
+          </div>
+          <h1 class="text-3xl font-black text-[#2C3A47]">
+            My Complaints
+          </h1>
+          <p class="text-xs text-[#5C6F84] font-medium">
+            View and track all complaints registered under your account (<span id="user-email-display"></span>).
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="/submit-complaint.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#2C3A47] text-[#A4B4C0] font-bold text-xs hover:bg-[#1E293B] transition-all shadow-md">
+            <span>➕ New Complaint</span>
+          </a>
+          <button id="btn-refresh" class="p-2.5 rounded-xl bg-white border border-[#C2CFDB] text-[#2C3A47] hover:bg-[#DCE4EC]/50 transition-colors">
+            🔄
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#C2CFDB]">
+          <span class="text-[11px] font-extrabold uppercase text-[#5C6F84]">Total Complaints</span>
+          <p id="stat-total" class="text-3xl font-black text-[#2C3A47] mt-2">...</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#C2CFDB]">
+          <span class="text-[11px] font-extrabold uppercase text-[#5C6F84]">Pending</span>
+          <p id="stat-pending" class="text-3xl font-black text-[#5C6F84] mt-2">...</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#C2CFDB]">
+          <span class="text-[11px] font-extrabold uppercase text-[#5C6F84]">Under Investigation</span>
+          <p id="stat-investigating" class="text-3xl font-black text-[#2C3A47] mt-2">...</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#C2CFDB]">
+          <span class="text-[11px] font-extrabold uppercase text-[#5C6F84]">Resolved</span>
+          <p id="stat-resolved" class="text-3xl font-black text-[#2C3A47] mt-2">...</p>
+        </div>
+      </div>
+
+      <!-- Complaints List Container -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-[#C2CFDB] space-y-6">
+        <h2 class="text-xl font-extrabold text-[#2C3A47]">Registered Complaints List</h2>
+
+        <div id="loading-state" class="text-center py-12">
+          <div class="w-8 h-8 border-4 border-[#DCE4EC] border-t-[#2C3A47] rounded-full animate-spin mx-auto mb-3"></div>
+          <p class="text-xs font-bold text-[#5C6F84]">Fetching your complaint history...</p>
+        </div>
+
+        <div id="empty-state" class="text-center py-12 space-y-4 hidden">
+          <p class="text-sm font-bold text-[#2C3A47]">You haven't submitted any complaints yet.</p>
+          <a href="/submit-complaint.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#2C3A47] text-[#A4B4C0] font-bold text-xs">
+            <span>Submit Your First Complaint</span>
+          </a>
+        </div>
+
+        <div id="table-container" class="overflow-x-auto rounded-2xl border border-[#C2CFDB] hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#2C3A47] text-[#A4B4C0] uppercase font-bold text-[10px] tracking-wider">
+              <tr>
+                <th class="p-4">Complaint ID</th>
+                <th class="p-4">Title</th>
+                <th class="p-4">Category</th>
+                <th class="p-4">Priority</th>
+                <th class="p-4">Status</th>
+                <th class="p-4">Date</th>
+                <th class="p-4 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="complaints-tbody" class="divide-y divide-[#C2CFDB]/60 bg-white"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="app-footer"></div>
+
+  <script type="module">
+    import { renderNavigation } from '/js/navigation.js';
+    import { initMyComplaintsPage } from '/js/my-complaints.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderNavigation();
+      await initMyComplaintsPage();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Complaint Detail - CampusShield</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-[#F4F7F9] text-[#1C252E] flex flex-col min-h-screen">
+
+  <div id="app-header"></div>
+
+  <main class="flex-grow py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto space-y-8">
+      
+      <!-- Navigation Header -->
+      <div class="flex items-center justify-between">
+        <a href="/admin-dashboard.html" class="inline-flex items-center gap-2 text-xs font-extrabold text-[#5C6F84] hover:text-[#2C3A47]">
+          <span>← Back to Dashboard</span>
+        </a>
+        <span id="detail-id" class="text-xs font-mono font-bold text-[#2C3A47] bg-[#DCE4EC] px-3 py-1 rounded-full border border-[#C2CFDB]"></span>
+      </div>
+
+      <!-- Alert Notification Container -->
+      <div id="alert-container" class="hidden"></div>
+
+      <!-- Complaint Overview Card -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-[#C2CFDB] space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#C2CFDB] pb-6">
+          <div>
+            <div class="flex items-center gap-3">
+              <span id="detail-priority-badge" class="badge"></span>
+            </div>
+            <h1 id="detail-title" class="text-2xl font-bold text-[#1C252E] mt-2"></h1>
+          </div>
+
+          <div class="flex flex-col items-start sm:items-end gap-1">
+            <span class="text-xs font-bold uppercase text-gray-500">Current Status</span>
+            <span id="detail-status-badge" class="badge"></span>
+          </div>
+        </div>
+
+        <!-- Grid Metadata -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+          <div class="p-4 bg-[#F4F7F9] rounded-2xl border border-[#C2CFDB]/60">
+            <span class="block font-bold text-gray-500 uppercase text-[10px]">Student Name</span>
+            <span id="detail-student-name" class="font-bold text-[#2C3A47] text-sm"></span>
+          </div>
+          <div class="p-4 bg-[#F4F7F9] rounded-2xl border border-[#C2CFDB]/60">
+            <span class="block font-bold text-gray-500 uppercase text-[10px]">Student Email</span>
+            <span id="detail-student-email" class="font-bold text-[#2C3A47] text-sm"></span>
+          </div>
+          <div class="p-4 bg-[#F4F7F9] rounded-2xl border border-[#C2CFDB]/60">
+            <span class="block font-bold text-gray-500 uppercase text-[10px]">Category</span>
+            <span id="detail-category" class="font-bold text-[#2C3A47] text-sm"></span>
+          </div>
+          <div class="p-4 bg-[#F4F7F9] rounded-2xl border border-[#C2CFDB]/60">
+            <span class="block font-bold text-gray-500 uppercase text-[10px]">Location</span>
+            <span id="detail-location" class="font-bold text-[#2C3A47] text-sm"></span>
+          </div>
+          <div class="p-4 bg-[#F4F7F9] rounded-2xl border border-[#C2CFDB]/60">
+            <span class="block font-bold text-gray-500 uppercase text-[10px]">Submitted Date</span>
+            <span id="detail-date" class="font-bold text-[#2C3A47] text-sm"></span>
+          </div>
+          <div class="p-4 bg-[#F4F7F9] rounded-2xl border border-[#C2CFDB]/60">
+            <span class="block font-bold text-gray-500 uppercase text-[10px]">Assigned Department</span>
+            <span id="detail-department" class="font-bold text-[#2C3A47] text-sm"></span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">Detailed Description</h3>
+          <div id="detail-description" class="p-4 bg-[#F4F7F9] rounded-2xl border border-[#C2CFDB] text-sm text-[#1C252E] leading-relaxed"></div>
+        </div>
+      </div>
+
+      <!-- SLA & Evidence -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- SLA Box -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl border border-[#C2CFDB] space-y-4">
+          <h3 class="text-lg font-black text-[#2C3A47]">⏰ SLA & Resolution Timeframe</h3>
+          <div class="p-5 rounded-2xl bg-[#F4F7F9] border border-[#C2CFDB] space-y-3 text-xs">
+            <div class="flex justify-between items-center border-b border-[#C2CFDB]/60 pb-2">
+              <span class="font-bold text-gray-500">SLA Duration Window</span>
+              <span id="sla-hours" class="font-mono font-bold text-[#2C3A47]"></span>
+            </div>
+            <div class="flex justify-between items-center border-b border-[#C2CFDB]/60 pb-2">
+              <span class="font-bold text-gray-500">Target Deadline</span>
+              <span id="sla-deadline" class="font-mono font-bold text-[#2C3A47]"></span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-gray-500">Escalation Status</span>
+              <span id="sla-escalation" class="badge"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evidence Box -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl border border-[#C2CFDB] space-y-4">
+          <h3 class="text-lg font-black text-[#2C3A47]">📎 Evidence Attachment</h3>
+          <div id="evidence-container" class="p-4 rounded-2xl bg-[#F4F7F9] border border-[#C2CFDB] flex items-center justify-between hidden">
+            <span class="text-xs font-bold text-[#2C3A47]">Attached Evidence Document</span>
+            <a id="evidence-link" href="#" target="_blank" class="text-xs font-bold text-[#5C6F84] hover:underline">View Evidence File ↗</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Admin Actions Control Panel -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Controls -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl border border-[#C2CFDB] space-y-4">
+          <h3 class="text-lg font-black text-[#2C3A47]">Status & Priority Management</h3>
+
+          <div class="space-y-4 pt-2">
+            <div>
+              <label class="block text-xs font-bold text-[#2C3A47] mb-1">Status Stage</label>
+              <select id="select-status" class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-xs font-bold bg-white text-[#2C3A47]"></select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-[#2C3A47] mb-1">Assigned Department</label>
+              <select id="select-department" class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-xs font-bold bg-white text-[#2C3A47]"></select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-[#2C3A47] mb-1">Priority Level</label>
+              <select id="select-priority" class="w-full px-4 py-2.5 rounded-xl border border-[#C2CFDB] text-xs font-bold bg-white text-[#2C3A47]">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
+              </select>
+            </div>
+
+            <div class="pt-2 space-y-2">
+              <button id="btn-save-control" class="w-full py-3 rounded-xl bg-[#2C3A47] text-[#A4B4C0] font-bold text-xs hover:bg-[#1E293B] shadow-md">
+                Save Status, Department & Priority Changes
+              </button>
+              <button id="btn-open-resolve" class="w-full py-3 rounded-xl bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 shadow-md">
+                Mark as Resolved
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Progress Note -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl border border-[#C2CFDB] space-y-4">
+          <h3 class="text-lg font-black text-[#2C3A47]">Add Progress Update Note</h3>
+
+          <form id="add-update-form" class="space-y-4 pt-2">
+            <div>
+              <label class="block text-xs font-bold text-[#2C3A47] mb-1">Update Message *</label>
+              <textarea id="update-msg-input" rows="3" required placeholder="e.g. Facilities team inspected pump room and ordered replacement parts." class="w-full p-3 rounded-xl border border-[#C2CFDB] text-xs focus:outline-none focus:ring-2 focus:ring-[#5C6F84]"></textarea>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="internal-check" class="accent-[#2C3A47] rounded cursor-pointer">
+              <label for="internal-check" class="text-xs text-gray-600 font-medium cursor-pointer">
+                Internal Note (Hide from public student view)
+              </label>
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-xl bg-[#5C6F84] text-white font-bold text-xs hover:bg-[#4A5D6E] shadow-md">
+              Post Timeline Update
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Resolution Summary Display -->
+      <div id="resolution-box" class="bg-emerald-50 border border-emerald-300 rounded-3xl p-6 shadow-sm space-y-2 hidden">
+        <h3 class="text-emerald-900 font-extrabold text-lg">✅ COMPLAINT RESOLVED</h3>
+        <p id="resolution-summary-text" class="text-sm font-semibold text-emerald-800"></p>
+      </div>
+
+      <!-- Timeline Events -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-[#C2CFDB] space-y-6">
+        <h3 class="text-lg font-black text-[#2C3A47]">Investigation Timeline</h3>
+        <div id="timeline-events" class="timeline-container"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- RESOLUTION MODAL -->
+  <div id="resolve-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden animate-fade-in">
+    <div class="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl border border-[#C2CFDB] space-y-6">
+      <div class="flex items-center justify-between border-b border-[#C2CFDB] pb-4">
+        <h3 class="text-xl font-extrabold text-[#2C3A47]">Resolve Complaint</h3>
+        <button id="btn-close-resolve" class="text-gray-400 hover:text-gray-600">✕</button>
+      </div>
+
+      <form id="resolve-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-[#2C3A47] mb-2">Resolution Summary *</label>
+          <textarea id="resolution-summary-input" rows="4" required placeholder="Provide complete explanation of how the complaint was resolved..." class="w-full p-4 rounded-xl border border-[#C2CFDB] text-sm focus:outline-none focus:ring-2 focus:ring-[#5C6F84]"></textarea>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" id="btn-cancel-resolve" class="w-1/2 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold text-xs hover:bg-gray-200">Cancel</button>
+          <button type="submit" class="w-1/2 py-3 rounded-xl bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 shadow-md">Confirm Resolution</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="app-footer"></div>
+
+  <script type="module">
+    import { renderNavigation } from '/js/navigation.js';
+    import { initAdminComplaintDetailPage } from '/js/admin-complaint-detail.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderNavigation();
+      await initAdminComplaintDetailPage();
+    });
+  </script>
+</body>
+</html>

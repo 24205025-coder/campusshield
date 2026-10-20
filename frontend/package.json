@@ -1,0 +1,14 @@
+{
+  "name": "campusshield-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "CampusShield Campus Complaint Portal - HTML, CSS, Vanilla JS Frontend",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve . -p 3000"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
